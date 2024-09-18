@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 
 const App = () => {
@@ -19,9 +19,7 @@ const App = () => {
     // Here you would typically send a request to your backend
   };
 
-
-  // 带显示密码的 input 组件
-  const PasswordInput = ({ id, value, onChange, show, setShow }) => (
+  const PasswordInput = useCallback(({ id, value, onChange, show, setShow }) => (
     <div className="relative">
       <input
         type={show ? "text" : "password"}
@@ -33,13 +31,13 @@ const App = () => {
       />
       <button
         type="button"
-        onClick={() => setShow(!show)}
+        onClick={() => setShow(prev => !prev)}
         className="absolute inset-y-0 right-0 pr-3 flex items-center"
       >
         {show ? <EyeOff size={20} /> : <Eye size={20} />}
       </button>
     </div>
-  );
+  ), []);
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -48,7 +46,6 @@ const App = () => {
           {isLogin ? 'Login' : 'Register'}
         </h2>
         <form onSubmit={handleSubmit}>
-          {/* 输入用户名 */}
           <div className="mb-4">
             <label htmlFor="username" className="block mb-2">Username</label>
             <input
@@ -60,7 +57,6 @@ const App = () => {
               required
             />
           </div>
-          {/* 输入密码 */}
           <div className="mb-4">
             <label htmlFor="password" className="block mb-2">Password</label>
             <PasswordInput
@@ -71,7 +67,6 @@ const App = () => {
               setShow={setShowPassword}
             />
           </div>
-          {/* 如果是注册的话，加一个确认密码的输入框 */}
           {!isLogin && (
             <div className="mb-4">
               <label htmlFor="confirmPassword" className="block mb-2">Confirm Password</label>
@@ -88,11 +83,8 @@ const App = () => {
             {isLogin ? 'Login' : 'Register'}
           </button>
         </form>
-        
         <p className="mt-4 text-center">
-          {/* 转换注册或登录的按钮和文字 */}
           {isLogin ? "Don't have an account? " : "Already have an account? "}
-          {/* 转换注册或登录的按钮 */}
           <button
             onClick={() => {
               setIsLogin(!isLogin);
