@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getUserInfo } from './api';
+import { data } from 'autoprefixer';
 
 const Home = () => {
   const [email, setEmail] = useState('');
@@ -14,17 +16,9 @@ const Home = () => {
       }
 
       try {
-        const response = await fetch('http://localhost:8000/users/me', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setEmail(data.email);
-        } else {
-          throw new Error('Failed to fetch user data');
-        }
+        const data = await getUserInfo(token);
+        console.log(data);
+        setEmail(data.email);
       } catch (error) {
         console.error('Error fetching user data:', error);
         localStorage.removeItem('token');
