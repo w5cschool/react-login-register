@@ -13,6 +13,11 @@ npx tailwindcss init -p
 
 ui:
 npm install lucide-react
+
+route:
+npm install react-router-dom
+
+
 ```
 
 1. start
